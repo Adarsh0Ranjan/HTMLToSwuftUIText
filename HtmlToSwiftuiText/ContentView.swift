@@ -9,43 +9,71 @@ import SwiftUI
 
 import SwiftUI
 
+
 struct ContentView: View {
     var body: some View {
-        NavigationView {
-            ScrollView {
-                AttributedText(.html(withBody: """
-                <ul><li><strong>Lightweight and compact design for easy transportation and storage</strong></li><li><strong>Can bear up to 150kg, making it suitable for various outdoor activities</strong></li><li><strong>Can bear up to 150kg, making it suitable for various outdoor activitie</strong></li></ul>
-                """))
-                .padding()
-                AttributedText(.html(withBody: """
-                                <ul><li>Lightweight and compact design for easy transportation and storage</li><li>Can bear up to 150kg, making it suitable for various outdoor activities</li><li>Can bear up to 150kg, making it suitable for various outdoor activitie</li></ul>
-                """))
-                .padding()
-                
-                AttributedText(.html(withBody: """
-                <ul><li><strong><u>Lightweight and compact design for easy transportation and storage</u></strong></li><li><strong><u>Can bear up to 150kg, making it suitable for various outdoor activities</u></strong></li><li><strong><u>Can bear up to 150kg, making it suitable for various outdoor activitie</u></strong></li></ul>
-                """))
-                .padding()
-                AttributedText(.html(withBody: """
-                                <ul><li><u>Lightweight and compact design for easy transportation and storage</u></li><li><u>Can bear up to 150kg, making it suitable for various outdoor activities</u></li><li><u>Can bear up to 150kg, making it suitable for various outdoor activitie</u></li></ul>
-                """))
-                .padding()
-                
-                AttributedText(.html(withBody: """
-                                                <p><strong><u>Lightweight and compact design for easy transportation and storage</u></strong></p><p><strong><u>Can bear up to 150kg, making it suitable for various outdoor activities</u></strong></p><p><strong><u>Can bear up to 150kg, making it suitable for various outdoor activitie</u></strong></p>
-                """))
-                .padding()
-                
-                AttributedText(.html(withBody: """
-                                               <p><u>Lightweight and compact design for easy transportation and storage</u></p><p><u>Can bear up to 150kg, making it suitable for various outdoor activities</u></p><p><u>Can bear up to 150kg, making it suitable for various outdoor activitie</u></p>
-                """))
-                .padding()
-                
-                
-                
-            }
-            .navigationTitle("Render HTML in SwiftUI")
+        ScrollView {
+            // Block 1: Bold font, Red color
+            AttributedText(.html(
+                withBody: """
+                <ul><li><strong>Lightweight and compact design for easy transportation and storage</strong></li><li><strong>Can bear up to 150kg, making it suitable for various outdoor activities</strong></li><li><strong>Can bear up to 150kg, making it suitable for various outdoor activities</strong></li></ul>
+                """,
+                customFont: UIFont.boldSystemFont(ofSize: 16),
+                textColor: UIColor.red
+            ))
+            .padding()
+            
+            // Block 2: Italic font, Blue color
+            AttributedText(.html(
+                withBody: """
+                <ul><li>Lightweight and compact design for easy transportation and storage</li><li>Can bear up to 150kg, making it suitable for various outdoor activities</li><li>Can bear up to 150kg, making it suitable for various outdoor activities</li></ul>
+                """,
+                customFont: UIFont.italicSystemFont(ofSize: 14),
+                textColor: UIColor.blue
+            ))
+            .padding()
+            
+            // Block 3: Bold and Underlined, Green color
+            AttributedText(.html(
+                withBody: """
+                <ul><li><strong><u>Lightweight and compact design for easy transportation and storage</u></strong></li><li><strong><u>Can bear up to 150kg, making it suitable for various outdoor activities</u></strong></li><li><strong><u>Can bear up to 150kg, making it suitable for various outdoor activities</u></strong></li></ul>
+                """,
+                customFont: UIFont.boldSystemFont(ofSize: 16),
+                textColor: UIColor.green
+            ))
+            .padding()
+            
+            // Block 4: Underlined, Orange color
+            AttributedText(.html(
+                withBody: """
+                <ul><li><u>Lightweight and compact design for easy transportation and storage</u></li><li><u>Can bear up to 150kg, making it suitable for various outdoor activities</u></li><li><u>Can bear up to 150kg, making it suitable for various outdoor activities</u></li></ul>
+                """,
+                customFont: UIFont.systemFont(ofSize: 14),
+                textColor: UIColor.orange
+            ))
+            .padding()
+            
+            // Block 5: Bold & Underlined, Purple color
+            AttributedText(.html(
+                withBody: """
+                <p><strong><u>Lightweight and compact design for easy transportation and storage</u></strong></p><p><strong><u>Can bear up to 150kg, making it suitable for various outdoor activities</u></strong></p><p><strong><u>Can bear up to 150kg, making it suitable for various outdoor activities</u></strong></p>
+                """,
+                customFont: UIFont.boldSystemFont(ofSize: 16),
+                textColor: UIColor.purple
+            ))
+            .padding()
+            
+            // Block 6: Underlined, Cyan color
+            AttributedText(.html(
+                withBody: """
+                <p><u>Lightweight and compact design for easy transportation and storage</u></p><p><u>Can bear up to 150kg, making it suitable for various outdoor activities</u></p><p><u>Can bear up to 150kg, making it suitable for various outdoor activities</u></p>
+                """,
+                customFont: UIFont.systemFont(ofSize: 14),
+                textColor: UIColor.cyan
+            ))
+            .padding()
         }
+        .navigationTitle("Custom HTML with Styles")
     }
 }
 
@@ -94,56 +122,61 @@ struct AttributedText: UIViewRepresentable {
 import UIKit
 
 extension NSAttributedString {
-    static func html(withBody body: String) -> NSAttributedString {
-        // Match the HTML `lang` attribute to current localisation used by the app (aka Bundle.main).
+    static func html(withBody body: String, customFont: UIFont = UIFont.systemFont(ofSize: 14), textColor: UIColor = .black) -> NSAttributedString {
         let bundle = Bundle.main
-        let lang = bundle.preferredLocalizations.first
-        ?? bundle.developmentLocalization
-        ?? "en"
+        let lang = bundle.preferredLocalizations.first ?? bundle.developmentLocalization ?? "en"
         
-        return (try? NSAttributedString(
-            data: """
-            <!doctype html>
-            <html lang="\(lang)">
-            <head>
-                <meta charset="utf-8">
-                <style type="text/css">
-                    /*
-                      Custom CSS styling of HTML formatted text.
-                      Note, only a limited number of CSS features are supported by NSAttributedString/UITextView.
-                    */
-            
-                    body {
-                        font: -apple-system-body;
-                        color: \(UIColor.secondaryLabel.hex);
-                    }
-            
-                    h1, h2, h3, h4, h5, h6 {
-                        color: \(UIColor.label.hex);
-                    }
-            
-                    a {
-                        color: \(UIColor.systemGreen.hex);
-                    }
-            
-                    li:last-child {
-                        margin-bottom: 1em;
-                    }
-                </style>
-            </head>
-            <body>
-                \(body)
-            </body>
-            </html>
-            """.data(using: .utf8)!,
-            options: [
-                .documentType: NSAttributedString.DocumentType.html,
-                .characterEncoding: NSUTF8StringEncoding,
-            ],
-            documentAttributes: nil
-        )) ?? NSAttributedString(string: body)
+        let htmlData = """
+        <!doctype html>
+        <html lang="\(lang)">
+        <head>
+            <meta charset="utf-8">
+            <style type="text/css">
+                body {
+                    font: -apple-system-body;
+                    color: \(textColor.hex); /* This is for the initial rendering from HTML */
+                }
+                h1, h2, h3, h4, h5, h6 {
+                    color: \(UIColor.label.hex);
+                }
+                a {
+                    color: \(UIColor.systemGreen.hex);
+                }
+                li:last-child {
+                    margin-bottom: 1em;
+                }
+            </style>
+        </head>
+        <body>
+            \(body)
+        </body>
+        </html>
+        """.data(using: .utf8)!
+        
+        // Parse HTML to an attributed string
+        let options: [NSAttributedString.DocumentReadingOptionKey: Any] = [
+            .documentType: NSAttributedString.DocumentType.html,
+            .characterEncoding: String.Encoding.utf8.rawValue
+        ]
+        
+        let attributedString = (try? NSAttributedString(data: htmlData, options: options, documentAttributes: nil)) ?? NSAttributedString(string: body)
+        
+        // Define the custom attributes for font and text color
+        let attributes: [NSAttributedString.Key: Any] = [
+            .font: customFont,
+            .foregroundColor: textColor
+        ]
+        
+        // Create a mutable copy to apply attributes
+        let mutableAttributedString = NSMutableAttributedString(attributedString: attributedString)
+        
+        // Apply the custom attributes to the entire string
+        mutableAttributedString.addAttributes(attributes, range: NSRange(location: 0, length: mutableAttributedString.length))
+        
+        return mutableAttributedString
     }
 }
+
 
 // MARK: Converting UIColors into CSS friendly color hex string
 
